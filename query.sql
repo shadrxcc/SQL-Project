@@ -42,3 +42,6 @@ SELECT name FROM world
   FROM world
  WHERE capital LIKE '%city'
 
+SELECT capital, name
+from world
+WHERE capital LIKE concat('%', name, '%')
