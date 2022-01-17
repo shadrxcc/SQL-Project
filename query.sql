@@ -33,3 +33,7 @@ SELECT name FROM world
 
 SELECT name FROM world
  WHERE LENGTH(name) = 4
+
+ SELECT name
+  FROM world
+ WHERE name = capital
