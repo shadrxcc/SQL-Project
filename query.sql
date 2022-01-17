@@ -16,3 +16,6 @@ SELECT name FROM world WHERE name LIKE '%X%';
 
 SELECT name FROM world
   WHERE name LIKE 'c%' AND name LIKE '%ia'
+
+  SELECT name FROM world
+  WHERE name LIKE '%oo%'
