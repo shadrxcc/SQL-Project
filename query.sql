@@ -9,3 +9,10 @@ SELECT name, area FROM world WHERE area BETWEEN 200000 AND 250000;
 SELECT name FROM world WHERE name LIKE 'Y%';
 
 SELECT name FROM world WHERE name LIKE '%Y';
+
+SELECT name FROM world WHERE name LIKE '%X%';
+
+
+
+SELECT name FROM world
+  WHERE name LIKE 'c%' AND name LIKE '%ia'
