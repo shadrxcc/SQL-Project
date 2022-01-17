@@ -19,3 +19,10 @@ SELECT name FROM world
 
   SELECT name FROM world
   WHERE name LIKE '%oo%'
+
+
+
+
+  SELECT name FROM world
+ WHERE name LIKE '_t%'
+ORDER BY name
