@@ -50,3 +50,8 @@ SELECT capital, name
 from world
 WHERE capital LIKE concat('%', name, '%')
 AND LENGTH(capital) > LENGTH(name)
+
+SELECT name, REPLACE(capital, name, '')
+from world
+WHERE capital LIKE concat('%', name, '%')
+AND LENGTH(capital) > LENGTH(name)
