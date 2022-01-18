@@ -82,3 +82,12 @@ SELECT name, population FROM world WHERE population > (SELECT population FROM wo
 
 SELECT name, CONCAT(ROUND(population/(SELECT population FROM world WHERE name='Germany')*100, 0),'%') FROM world WHERE continent='Europe'
 
+SELECT name FROM world WHERE gdp > (SELECT MAX(gdp) FROM world WHERE continent = 'Europe')
+
+SELECT continent, name, area FROM world x WHERE area >= ALL (SELECT area FROM world y WHERE y.continent=x.continent AND area > 0)
+
+SELECT continent, name FROM world x WHERE name <= ALL (SELECT name FROM world y WHERE x.continent=y.continent);
+
+SELECT name, continent, population FROM world x WHERE 25000000 >= ALL(SELECT population FROM world y WHERE x.continent=y.continent)
+
+SELECT name, continent FROM world x WHERE population >= ALL(SELECT population * 3 FROM world y WHERE y.continent = x.continent AND y.name != x.name)
