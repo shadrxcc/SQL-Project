@@ -109,3 +109,98 @@ SELECT continent, COUNT(name) FROM world GROUP BY continent;
 SELECT continent, COUNT(name) FROM world WHERE population >= 10000000 GROUP BY continent;
 
 SELECT continent FROM world GROUP BY continent HAVING SUM(population) > 100000000;
+
+/*JOIN*/
+SELECT matchid, player FROM goal WHERE teamid = 'GER';
+
+SELECT id,stadium,team1,team2 FROM game WHERE id = 1012
+
+SELECT player, teamid, stadium, mdate FROM game JOIN goal ON (id=matchid) WHERE teamid = 'GER'
+
+SELECT team1, team2, player FROM game JOIN goal ON id = matchid WHERE player LIKE 'Mario%'
+
+SELECT player, teamid, coach, gtime FROM goal JOIN eteam ON id = teamid WHERE gtime <= 10;
+
+SELECT mdate, teamname FROM game JOIN eteam ON (team1=eteam.id) WHERE coach = 'Fernando Santos'
+
+SELECT player FROM goal JOIN game ON id = matchid WHERE stadium = 'National Stadium, Warsaw'
+
+SELECT DISTINCT player FROM game JOIN goal ON matchid = id WHERE (team1='GER' OR team2='GER') AND teamid!='GER';
+
+SELECT teamname, COUNT(matchid) FROM eteam JOIN goal ON id=teamid GROUP BY teamname ORDER BY teamname
+
+SELECT stadium, COUNT(*) FROM game JOIN goal ON (id=matchid) GROUP BY stadium;
+
+SELECT matchid,mdate, COUNT(*) FROM game JOIN goal ON matchid = id WHERE (team1 = 'POL' OR team2 = 'POL') GROUP BY matchid, mdate;
+
+SELECT matchid, mdate, COUNT(*) FROM game JOIN goal ON id=matchid WHERE teamid='GER' GROUP BY matchid, mdate
+
+SELECT mdate,team1, SUM(CASE WHEN teamid=team1 THEN 1 ELSE 0 END) score1, team2, SUM(CASE WHEN teamid=team2 THEN 1 ELSE 0 END) score2 FROM game LEFT JOIN goal ON matchid = id GROUP BY mdate, matchid, team1, team2
+
+/*1962 movies*/
+
+SELECT id, title FROM movie WHERE yr=1962
+
+SELECT yr FROM movie WHERE title = 'Citizen Kane';
+
+SELECT id, title, yr FROM movie WHERE title  LIKE '%Star Trek%' ORDER BY yr;
+
+SELECT id FROM actor WHERE name = 'Glenn Close';
+
+SELECT id FROM movie WHERE title = 'Casablanca';
+
+SELECT name FROM actor JOIN casting ON id = actorid WHERE movieid = 11768;
+
+SELECT name FROM movie, actor, casting WHERE movie.title = 'Alien' AND movie.id = movieid AND actor.id = actorid;
+
+SELECT title FROM movie, actor, casting WHERE name='Harrison Ford' AND movie.id = movieid AND actor.id = actorid;
+
+SELECT title FROM movie, actor, casting WHERE name ='Harrison Ford' AND movie.id = movieid AND actor.id = actorid AND ord!=1;
+
+SELECT title, name FROM movie, actor, casting WHERE yr = 1962 AND movie.id = movieid AND actor.id = actorid AND ord=1;
+
+SELECT yr,COUNT(title) FROM movie JOIN casting ON movie.id=movieid JOIN actor ON actorid=actor.id WHERE name='Rock Hudson' GROUP BY yr HAVING COUNT(title) > 2;
+
+SELECT title, name FROM movie JOIN casting ON movie.id=movieid JOIN actor ON actorid=actor.id WHERE movieid IN (SELECT movieid 
+FROM movie, actor, casting WHERE name='Julie Andrews' AND movie.id=movieid AND actor.id=actorid) AND ord=1;
+
+SELECT name FROM casting JOIN actor ON (actor.id = actorid AND casting.ord = 1) JOIN movie ON (movie.id = movieid) GROUP BY name HAVING COUNT(ord) >= 15 ORDER BY name;
+
+SELECT title, COUNT(actorid) FROM casting JOIN actor ON (actor.id = actorid) JOIN movie ON (movie.id = movieid) WHERE yr = 1978 GROUP BY title ORDER BY COUNT(actorid) DESC, title ASC;
+
+SELECT DISTINCT name FROM actor, casting WHERE actor.id = actorid AND movieid IN (SELECT movieid  FROM casting, actor
+WHERE actor.id = actorid AND name='Art Garfunkel') AND name!='Art Garfunkel';
+
+/*Using Null*/
+SELECT name FROM teacher WHERE dept IS NULL;
+
+SELECT teacher.name, dept.name FROM teacher INNER JOIN dept ON (teacher.dept=dept.id);
+
+SELECT teacher.name, dept.name FROM teacher LEFT JOIN dept ON (teacher.dept=dept.id);
+
+SELECT teacher.name, dept.name FROM teacher RIGHT JOIN dept ON (teacher.dept=dept.id);
+
+SELECT name, COALESCE(mobile,'07986 444 2266') FROM teacher;
+
+SELECT teacher.name, COALESCE(dept.name, 'None') FROM teacher LEFT JOIN dept ON (teacher.dept = dept.id);
+
+SELECT COUNT(name), COUNT(mobile) FROM teacher;
+
+SELECT dept.name, COUNT(teacher.name) FROM teacher RIGHT JOIN dept ON (teacher.dept=dept.id) GROUP BY dept.name;
+
+SELECT name, 
+CASE 
+WHEN dept=1 THEN 'Sci'
+WHEN dept=2 THEN 'Sci'
+ELSE 'Art'
+END AS dept
+FROM teacher;
+
+SELECT name, 
+CASE 
+WHEN dept=1 THEN 'Sci'
+WHEN dept=2 THEN 'Sci'
+ELSE 'None'
+END AS dept
+FROM teacher;
+
