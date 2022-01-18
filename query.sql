@@ -4,7 +4,7 @@ SELECT name, population FROM world WHERE name IN ('Sweden', 'Norway', 'Denmark')
 
 SELECT name, area FROM world WHERE area BETWEEN 200000 AND 250000;
 
-
+/*SELECT names*/
 /*query to find the country that starts with Y*/
 SELECT name FROM world WHERE name LIKE 'Y%';
 
@@ -39,6 +39,8 @@ SELECT capital, name FROM world WHERE capital LIKE concat('%', name, '%') AND LE
 
 SELECT name, REPLACE(capital, name, '') FROM world WHERE capital LIKE concat('%', name, '%')  AND LENGTH(capital) > LENGTH(name)
 
+
+/* Select from Nobel*/
 SELECT yr, subject, winner FROM nobel WHERE yr = 1950
 
 SELECT winner FROM nobel WHERE yr = 1962 AND subject = 'Literature'
@@ -204,3 +206,26 @@ ELSE 'None'
 END AS dept
 FROM teacher;
 
+/*Self Join*/
+SELECT COUNT(id) FROM stops;
+
+SELECT id FROM stops WHERE name = 'Craiglockhart'
+
+SELECT id, name FROM stops JOIN route ON (stops.id=route.stop)
+WHERE num='4' and company='LRT';
+
+SELECT company, num, COUNT(*) FROM route WHERE stop = 149 OR stop = 53 GROUP BY company, num HAVING COUNT(*) = 2;
+
+SELECT a.company, a.num, a.stop, b.stop FROM route a JOIN route b ON (a.company = b.company AND a.num = b.num) WHERE a.stop = 53 AND b.stop = 149;
+
+SELECT a.company, a.num, stopa.name, stopb.name FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) JOIN stops stopa ON (a.stop=stopa.id) JOIN stops stopb ON (b.stop=stopb.id) WHERE stopa.name='Craiglockhart' AND stopb.name= 'London Road';
+
+SELECT DISTINCT a.company,a.num FROM route a JOIN route b 
+ON (a.company = b.company AND a.num = b.num) WHERE a.stop = 115 AND b.stop = 137;
+
+SELECT a.company, a.num FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) JOIN stops stopa ON (a.stop=stopa.id) JOIN stops stopb ON (b.stop=stopb.id)
+WHERE stopa.name='Craiglockhart' AND stopb.name='Tollcross';
+
+SELECT DISTINCT stopb.name, a.company, a.num FROM stops stopa, stops stopb, route a, route b WHERE a.company=b.company
+AND a.num=b.num AND stopa.id = a.stop AND stopb.id = b.stop
+AND stopa.name = 'Craiglockhart';
