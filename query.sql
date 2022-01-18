@@ -95,3 +95,5 @@ SELECT name, continent FROM world x WHERE population >= ALL(SELECT population * 
 /*SUM and COUNT*/
 
 SELECT SUM(population) FROM world;
+
+SELECT DISTINCT continent FROM world;
