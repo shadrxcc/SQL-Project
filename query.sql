@@ -79,3 +79,6 @@ SELECT name FROM world WHERE continent = 'Europe' AND  gdp/population > (SELECT 
 SELECT name, continent FROM world WHERE continent IN (SELECT continent FROM world WHERE name = 'Argentina' OR name = 'Australia') ORDER BY name
 
 SELECT name, population FROM world WHERE population > (SELECT population FROM world WHERE name = 'Canada') AND population < (SELECT population FROM world WHERE name = 'Poland')
+
+SELECT name, CONCAT(ROUND(population/(SELECT population FROM world WHERE name='Germany')*100, 0),'%') FROM world WHERE continent='Europe'
+
