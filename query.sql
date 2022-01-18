@@ -103,3 +103,6 @@ SELECT SUM(gdp) FROM world WHERE continent = 'Africa';
 SELECT COUNT(*) FROM world WHERE area >= 1000000;
 
 SELECT SUM(population) FROM world WHERE name IN ('Estonia', 'Latvia', 'Lithuania');
+
+SELECT continent, COUNT(name) FROM world GROUP BY continent;
+
